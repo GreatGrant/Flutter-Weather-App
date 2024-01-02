@@ -28,7 +28,7 @@ class HomePageState extends State<HomePage>{
         ],
       ),
       body:  Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,26 +72,40 @@ class HomePageState extends State<HomePage>{
               fontWeight: FontWeight.bold,
             ),
             ),
-            const SizedBox(height:  20),
+            const SizedBox(height:  16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 100,
-                  child: Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
+                Card(
+                  elevation: 6,
+                    child: Container(
+                      width: 100,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Column(
+                        children: [
+                          Text(
+                            "09:00",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Icon(
+                            Icons.cloud,
+                            size: 32,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            "3:20.12",
+                          ),
+                        ],
+                      ),
                     ),
-                    child: const Column(
-                      children: [
-                        Text("09:00"),
-                        Icon(Icons.cloud),
-                        Text("7.67")
-                      ],
-                    ),
+
                   ),
-                )
               ],
             ),
             Placeholder(fallbackHeight: 150),
