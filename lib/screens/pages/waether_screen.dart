@@ -65,13 +65,7 @@ class HomePageState extends State<HomePage>{
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Weather Forecast",
-              style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-            ),
+            const TextTitleWidget(title: "Weather Forecast"),
             const SizedBox(height:  16),
             const SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -85,15 +79,73 @@ class HomePageState extends State<HomePage>{
                 ],
               ),
             ),
-            Placeholder(fallbackHeight: 150),
-            SizedBox(height: 20),
-            Placeholder(fallbackHeight: 150)
+            const SizedBox(height: 20),
+            const TextTitleWidget(title: "Additional Information"),
+            const SizedBox(height: 20),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                AdditionalInfoItem(icon: Icons.water_drop, forecastTitle: "Humidity", forecast: "94",),
+                AdditionalInfoItem(icon: Icons.air, forecastTitle: "Wind Speed", forecast: "7.67"),
+                AdditionalInfoItem(icon: Icons.beach_access, forecastTitle: "Pressure", forecast: "1006"),
+              ],
+            )
           ]
         ),
       )
     );
   }
 
+}
+
+class AdditionalInfoItem extends StatelessWidget {
+  final IconData icon;
+  final String forecastTitle;
+  final String forecast;
+
+  const AdditionalInfoItem({
+    required this.icon,
+    required this.forecastTitle,
+    required this.forecast,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon),
+          const SizedBox(height: 6),
+          Text(forecastTitle),
+          const SizedBox(height: 6),
+          BoldTitleWidget(text: forecast)
+        ],
+      ),
+    );
+  }
+}
+
+class TextTitleWidget extends StatelessWidget {
+  final String title;
+  
+  const TextTitleWidget({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return  Text(
+      title,
+      style: const TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
+    );
+  }
 }
 
 class HourlyForecastCardItem extends StatelessWidget {
@@ -120,13 +172,7 @@ class HourlyForecastCardItem extends StatelessWidget {
           ),
           child:  Column(
             children: [
-              Text(
-                time,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                ),
-              ),
+              BoldTitleWidget(text: time),
               const SizedBox(height: 8),
                Icon(
                 icon,
@@ -141,5 +187,25 @@ class HourlyForecastCardItem extends StatelessWidget {
         ),
 
       );
+  }
+}
+
+class BoldTitleWidget extends StatelessWidget {
+  const BoldTitleWidget({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold
+      ),
+    );
   }
 }
