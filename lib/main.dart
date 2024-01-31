@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
-      home: const HomePage(title: 'Currency Converter'),
+      home: const HomePage(title: "Weather App"),
     );
   }
 }
