@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../additional_info_item.dart';
 import '../../hourly_forecast_card_item.dart';
@@ -8,17 +9,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class HomePage extends StatefulWidget{
   const HomePage({super.key, required  this.title});
   final String title;
-  
-  Future getCurrentWeather() async{
-    const String cityName = "Abuja,ng";
-    await dotenv.load();
-
-    String? appId = dotenv.env["API_KEY"];
-
-    final res = await http.get(
-      Uri.parse("api.openweathermap.org/data/2.5/weather?q=$cityName&APPID=$appId")
-    );
-  }
 
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -26,6 +16,37 @@ class HomePage extends StatefulWidget{
 }
 
 class HomePageState extends State<HomePage>{
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentWeather();
+  }
+
+  Future getCurrentWeather() async{
+
+    try{
+      const String cityName = "Abuja,ng";
+      await dotenv.load();
+
+      String? appId = dotenv.env["API_KEY"];
+
+      final res = await http.get(
+          Uri.parse("api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$appId")
+      );
+
+        if(res.statusCode == 200){
+          print(res.body);
+        }else{
+          throw http.ClientException("Error: ${res.statusCode}");
+        }
+
+
+    } catch (e){
+        print("an error occurred: $e");
+    }
+      }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
