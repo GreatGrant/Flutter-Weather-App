@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../additional_info_item.dart';
@@ -16,6 +18,7 @@ class HomePage extends StatefulWidget{
 }
 
 class HomePageState extends State<HomePage>{
+  double temperature = 0;
 
   @override
   void initState() {
@@ -26,24 +29,29 @@ class HomePageState extends State<HomePage>{
   Future getCurrentWeather() async{
 
     try{
-      const String cityName = "Abuja,ng";
-      await dotenv.load();
 
-      String? appId = dotenv.env["API_KEY"];
+      const String cityName = "Abuja,ng";
+      const String urlEndPoint = "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=905be606ab1e153bf7a8bbe63b590b3d";
 
       final res = await http.get(
-          Uri.parse("api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$appId")
+          Uri.parse(urlEndPoint)
       );
 
+      final data = jsonDecode(res.body);
+
         if(res.statusCode == 200){
-          print(res.body);
+          setState(() {
+            temperature = data['list'][0]['main']['temp'];
+          });
+
         }else{
           throw http.ClientException("Error: ${res.statusCode}");
         }
 
-
     } catch (e){
-        print("an error occurred: $e");
+        if (kDebugMode) {
+          print("an error occurred: $e");
+        }
     }
       }
 
@@ -76,21 +84,21 @@ class HomePageState extends State<HomePage>{
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
                         Text(
-                          "300.67K",
-                          style: TextStyle(
+                          '$temperature K',
+                          style: const TextStyle(
                             fontSize: 33,
                             fontWeight: FontWeight.bold
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Icon(Icons.cloud, size: 60),
-                        SizedBox(height: 8),
-                        Text(
+                        const SizedBox(height: 8),
+                        const Icon(Icons.cloud, size: 60),
+                        const SizedBox(height: 8),
+                        const Text(
                             "Rain",
                             style: TextStyle(
                             fontSize: 32
