@@ -31,7 +31,8 @@ class HomePageState extends State<HomePage>{
     try{
 
       const String cityName = "Abuja,ng";
-      const String urlEndPoint = "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=905be606ab1e153bf7a8bbe63b590b3d";
+      const String key = "905be606ab1e153bf7a8bbe63b590b3d";
+      const String urlEndPoint = "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$key";
 
       final res = await http.get(
           Uri.parse(urlEndPoint)
