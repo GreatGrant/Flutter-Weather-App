@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../../additional_info_item.dart';
-import '../../hourly_forecast_card_item.dart';
-import '../../title_text_widget.dart';
-import 'package:http/http.dart' as http;
+import 'package:my_weather_app/service/weather_service.dart';
+import '../../widgets/additional_info_item.dart';
+import '../../widgets/hourly_forecast_card_item.dart';
+import '../../widgets/title_text_widget.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -16,38 +17,14 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  Future<Map<String, dynamic>?> getCurrentWeather() async {
-    try {
-      const String cityName = "Abuja,ng";
-      final String? key = dotenv.env['API_KEY']; // Fetch the API key
+  late Future<Map<String, dynamic>?> _weatherData;
 
-      if (key == null || key.isEmpty) {
-        throw 'API key is missing';
-      }
-
-      final String urlEndPoint =
-          "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$key";
-      final http.Response res = await http.get(Uri.parse(urlEndPoint));
-
-      if (res.statusCode != 200) {
-        throw 'An unexpected error occurred. HTTP Status: ${res.statusCode}';
-      }
-
-      final Map<String, dynamic> data = jsonDecode(res.body);
-
-      if (data['cod'] != "200") {
-        throw 'An unexpected error occurred. API Response: ${data['cod']}';
-      }
-
-      return data;
-    } catch (e) {
-      if (kDebugMode) {
-        print("An error occurred: $e");
-      }
-      return null; // Return null or handle the error in another way
-    }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _weatherData = WeatherService.fetchCurrentWeather("Abuja,ng");
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +38,7 @@ class HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  getCurrentWeather();
+                  _weatherData;
                 });
               },
               icon: const Icon(Icons.refresh),
@@ -70,7 +47,7 @@ class HomePageState extends State<HomePage> {
         ),
         body: SafeArea(
           child: FutureBuilder(
-            future: getCurrentWeather(),
+            future: _weatherData,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
