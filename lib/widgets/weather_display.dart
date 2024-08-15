@@ -35,7 +35,7 @@ class WeatherDisplay extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        '$currentTemperature K', // Actual temperature
+                        '$currentTemperature K'zz, // Actual temperature
                         style: const TextStyle(
                             fontSize: 33, fontWeight: FontWeight.bold),
                       ),
