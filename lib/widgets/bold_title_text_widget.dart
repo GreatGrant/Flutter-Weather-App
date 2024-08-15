@@ -14,7 +14,8 @@ class BoldTitleWidget extends StatelessWidget {
       text,
       style: const TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+
       ),
     );
   }
