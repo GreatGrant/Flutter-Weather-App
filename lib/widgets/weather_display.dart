@@ -12,7 +12,7 @@ class WeatherDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentTemperature = data["list"][0]["main"]["temp"];
+    final currentTemperature = (data["list"][0]["main"]["temp"]- 273.15).toStringAsFixed(1);
     final weatherCondition = data["list"][0]["weather"][0]["main"];
     final currentPressure = data["list"][0]["main"]["pressure"].toString();
     final currentWindSpeed = data["list"][0]["wind"]["speed"].toString();
@@ -35,7 +35,7 @@ class WeatherDisplay extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        '$currentTemperature K'zz, // Actual temperature
+                        '$currentTemperature°C', // Actual temperature
                         style: const TextStyle(
                             fontSize: 33, fontWeight: FontWeight.bold),
                       ),
